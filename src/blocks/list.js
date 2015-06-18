@@ -86,7 +86,7 @@ module.exports = Block.extend({
 
   loadData: function(data) {
     var block = this;
-    if (this.options.convertFromMarkdown && !data.isHtml) {
+    if (this.options.convertFromMarkdown && data.format !== "html") {
       data = this.parseFromMarkdown(data.text);
     }
 
