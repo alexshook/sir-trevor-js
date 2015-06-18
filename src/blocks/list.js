@@ -92,7 +92,7 @@ module.exports = Block.extend({
 
     if (data.listItems.length) {
       data.listItems.forEach(function(li) {
-        block.addListItem(li);
+        block.addListItem(li.content);
       });
     } else {
       block.addListItem();
@@ -102,7 +102,7 @@ module.exports = Block.extend({
   parseFromMarkdown: function(markdown) {
     var listItems = markdown.replace(/^ - (.+)$/mg,"$1").split("\n");
     listItems = listItems.map(function(item) {
-      return stToHTML(item, this.type);
+      return {content: stToHTML(item, this.type)};
     }.bind(this));
 
     return { listItems: listItems, isHtml: true };
@@ -112,7 +112,8 @@ module.exports = Block.extend({
     var data = {isHtml: true, listItems: []};
 
     this.editorIds.forEach(function(editorId) {
-      data.listItems.push(this.getTextEditor(editorId).scribe.getContent());
+      var listItem = {content: this.getTextEditor(editorId).scribe.getContent()};
+      data.listItems.push(listItem);
     }.bind(this));
 
     return data;

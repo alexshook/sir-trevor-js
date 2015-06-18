@@ -23328,7 +23328,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (data.listItems.length) {
 	      data.listItems.forEach(function(li) {
-	        block.addListItem(li);
+	        block.addListItem(li.content);
 	      });
 	    } else {
 	      block.addListItem();
@@ -23338,7 +23338,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  parseFromMarkdown: function(markdown) {
 	    var listItems = markdown.replace(/^ - (.+)$/mg,"$1").split("\n");
 	    listItems = listItems.map(function(item) {
-	      return stToHTML(item, this.type);
+	      return {content: stToHTML(item, this.type)};
 	    }.bind(this));
 
 	    return { listItems: listItems, isHtml: true };
@@ -23348,7 +23348,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var data = {isHtml: true, listItems: []};
 
 	    this.editorIds.forEach(function(editorId) {
-	      data.listItems.push(this.getTextEditor(editorId).scribe.getContent());
+	      var listItem = {content: this.getTextEditor(editorId).scribe.getContent()};
+	      data.listItems.push(listItem);
 	    }.bind(this));
 
 	    return data;
